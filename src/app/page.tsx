@@ -36,6 +36,7 @@ export default function Home() {
   if(session) {
     return (
       <div className="flex flex-col p-4 gap-y-4">
+        <p>Connecté en tant que: {session.user.email}</p>
         <Button onClick={() => authClient.signOut()}>
           Sign out
         </Button>
