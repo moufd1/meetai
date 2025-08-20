@@ -17,8 +17,10 @@ FormMessage,
 import { Octagon, OctagonAlert, OctagonAlertIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import Link from "next/dist/client/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Provider } from "@radix-ui/react-tooltip";
+import { useRouter } from "next/navigation";
+import { FaGoogle, FaGithub } from 'react-icons/fa';
 
 const formSchema = z.object({
     email: z.string().email(),
@@ -26,7 +28,7 @@ const formSchema = z.object({
 });
 
 export const SignInView = () => {
-    const router = useRouter();
+    const router=useRouter();
     const [error,setError] = useState<string | null>(null);
     const [pending,setPending]= useState(false);
     const form = useForm<z.infer<typeof formSchema>>({
@@ -42,11 +44,30 @@ export const SignInView = () => {
         authClient.signIn.email({
             email:data.email,
             password: data.password,
+            callbackURL: "/",
             },
             {
             onSuccess:()=>{
                 setPending(false);
-                router.push("/");
+            router.push("/");
+            },
+            onError:({error}) =>{
+                setPending(false);
+                setError(error.message)
+            },
+            }
+        );
+    };
+    const onSocial = (provider:"github" | "google")=>{
+        setError(null);
+        setPending(true);
+        authClient.signIn.social({
+            provider: provider,
+            callbackURL:"/",
+            },
+            {
+            onSuccess:()=>{
+                setPending(false);
             },
             onError:({error}) =>{
                 setPending(false);
@@ -69,7 +90,7 @@ export const SignInView = () => {
                                     </p>
                                 </div>
                                 <div className="grid gap-3">
-                                    <FormField 
+                                    <FormField
                                         control={form.control}
                                         name="email"
                                         render={({field}) => (
@@ -87,7 +108,7 @@ export const SignInView = () => {
                                         )}
                                     />
                                     <div className="grid gap-3">
-                                    <FormField 
+                                    <FormField
                                         control={form.control}
                                         name="password"
                                         render={({field}) => (
@@ -122,20 +143,22 @@ export const SignInView = () => {
                                         </span>
                                     </div>
                                     <div className="grid grid-cols-2 gap-4">
-                                        <Button 
+                                        <Button
                                         disabled={pending}
+                                        onClick={()=>onSocial("google")}
                                         variant="outline"
                                         type="button"
                                         className="w-full">
-                                            Google
+                                            <FaGoogle/>
                                         </Button>
-                                    
-                                        <Button 
+
+                                        <Button
                                         disabled={pending}
+                                        onClick={()=>onSocial("github")}
                                         variant="outline"
                                         type="button"
                                         className="w-full">
-                                            Github
+                                            <FaGithub/>
                                         </Button>
                                     </div>
                                     <div className="text-center text-sm">
@@ -148,7 +171,7 @@ export const SignInView = () => {
                             </div>
                         </form>
                     </Form>
-                    <div className="bg-gradient-to-br from-green-700 to-green-900 relative hidden md:flex flex-col gap-y-4 items-center justify-center">
+                    <div className="bg-gradient-to-br from-green-700 to-green-900 relative hidden md:flex flex-col gap-y-4 items-center justify-center">      
                         <img src="logo.svg" alt="Image" className="h-[92px] w-[92px]"></img>
                         <p className="text-2xl font-semibold text-white">
                              Meet.AI
