@@ -1,11 +1,11 @@
+"use client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
 import { ErrorState } from "@/components/error-state";
 import { DataTable } from "../components/data-table";
-import { LoadingState } from "@/components/loading-state";
 import { columns } from "../components/columns";
 import { EmptyState } from "@/components/empty-state";
-
+import { LoadingState } from "@/components/loading-state";
 
 export const AgentsView = () => {
     const trpc = useTRPC();
@@ -23,6 +23,7 @@ export const AgentsView = () => {
         </div>
     )
 };
+
 
 export const AgentsViewLoading = () =>{
     return(
