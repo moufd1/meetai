@@ -8,8 +8,6 @@ export const MeetingsView = () => {
     const { data } = useSuspenseQuery(trpc.meetings.getMany.queryOptions({}));
 
     return(
-        <div>
-            {JSON.stringify(data)}
-        </div>
+        <div className="overflow-x-scroll"></div>
     )
 }
