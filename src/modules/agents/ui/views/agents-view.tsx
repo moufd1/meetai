@@ -10,6 +10,7 @@ import { useAgentsFilters } from "../../hooks/use-agents-filters";
 import { DataPagination } from "../components/data-pagination";
 import { useRouter } from "next/navigation";
 
+
 export const AgentsView = () => {
     const trpc = useTRPC();
     const router = useRouter();
